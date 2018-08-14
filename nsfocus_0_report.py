@@ -8,6 +8,9 @@ import re
 import time
 
 import decimal
+from pyecharts import Pie,Page,Style
+# from
+
 decimal.getcontext().prec=4
 #模板路径
 TMP_DIR=os.path.join(os.path.dirname(__file__),'template')
@@ -90,6 +93,7 @@ def make_project(project_name):
         #删除多余的模板文件
         os.remove(INDEX_TPL.replace(TMP_DIR,project_name))
         os.remove(HOST_TPL.replace(TMP_DIR,project_name))
+
         return project_name
     except Exception as e:
         print e,'Make project failed!'
@@ -192,6 +196,8 @@ def build_index(datas,project_name):
         render_data['scan_time_start'],render_data['scan_time_end']=gettime(int(render_data['ip_num']))
         render_data['os_list']=Statistics_os(datas)
         render_data['items']=datas
+        render_data['statistics']='images/'+render_data['ip_num']+'.png'
+        shutil.copyfile(render_data['statistics'],os.path.join(project_name,render_data['statistics']))
 
         tpl = tplenv.get_template('index.html')
         html=tpl.render(**render_data)
